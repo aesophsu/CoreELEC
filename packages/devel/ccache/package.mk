@@ -23,6 +23,7 @@ configure_host() {
 
   cmake -DCMAKE_TOOLCHAIN_FILE=cmake-ccache.conf \
         -DCMAKE_INSTALL_PREFIX=${TOOLCHAIN} \
+        -DCMAKE_CXX_FLAGS=\"${HOST_CXXFLAGS} -Wno-error=restrict\" \
         -DENABLE_DOCUMENTATION=OFF \
         -DREDIS_STORAGE_BACKEND=OFF \
         -DENABLE_TESTING=OFF \
