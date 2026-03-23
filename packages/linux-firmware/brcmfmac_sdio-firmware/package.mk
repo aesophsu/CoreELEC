@@ -39,6 +39,20 @@ post_makeinstall_target() {
     done <${fwlist}
   done
 
+  if [ -d "${PKG_DIR}/files/brcm" ]; then
+    mkdir -p ${FW_TARGET_DIR}/brcm
+    cp -Lv ${PKG_DIR}/files/brcm/* ${FW_TARGET_DIR}/brcm/
+  fi
+
+  # Phicomm N1 uses the same 43455 firmware blob as the generic AP6255
+  # package, but needs a board-specific filename for its NVRAM data.
+  if [ -f "${FW_TARGET_DIR}/brcm/brcmfmac43455-sdio.bin" ] && \
+     [ ! -e "${FW_TARGET_DIR}/brcm/brcmfmac43455-sdio.phicomm,n1.bin" ]; then
+    cp -Lv \
+      ${FW_TARGET_DIR}/brcm/brcmfmac43455-sdio.bin \
+      ${FW_TARGET_DIR}/brcm/brcmfmac43455-sdio.phicomm,n1.bin
+  fi
+
   mkdir -p ${INSTALL}/usr/bin
     cp ${PKG_DIR}/scripts/brcmfmac-firmware-setup ${INSTALL}/usr/bin
 }
