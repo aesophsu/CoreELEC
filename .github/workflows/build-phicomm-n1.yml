@@ -1,7 +1,14 @@
 name: Build Phicomm N1 Image
 
 on:
+  push:
+    branches:
+      - phicomm-n1-coreelec22-port
   workflow_dispatch:
+
+concurrency:
+  group: build-phicomm-n1-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
