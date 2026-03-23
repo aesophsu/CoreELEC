@@ -77,3 +77,7 @@
 
   # vfd pannel display support
     VFD_SUPPORT="yes"
+
+  # AMLGX currently uses the shared mainline settings addon path.
+    DISTRO_PKG_SETTINGS="LibreELEC-settings"
+    DISTRO_PKG_SETTINGS_ID="service.libreelec.settings"
