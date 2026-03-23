@@ -70,6 +70,10 @@ case "${UBOOT_SYSTEM}" in
     mkimage_dtb
     ;;
   phicomm-n1)
+    if [ ! -f "${RELEASE_DIR}/3rdparty/bootloader/amlogic/${DTB}" ]; then
+      echo "error: missing required DTB ${DTB}" >&2
+      exit 1
+    fi
     mkimage_uEnv
     mkimage_autoscripts
     mkimage_bootini
