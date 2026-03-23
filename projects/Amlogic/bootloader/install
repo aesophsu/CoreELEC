@@ -9,7 +9,7 @@ mkdir -p "${DESTDIR}"
 FIPDIR="$(get_build_dir amlogic-boot-fip)"
 
 case "${UBOOT_SYSTEM}" in
-  box|"")
+  box|phicomm-n1|"")
     # no-op, use vendor bootloader
     ;;
   *)
