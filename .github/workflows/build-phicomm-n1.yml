@@ -1,0 +1,56 @@
+name: Build Phicomm N1 Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/lib/android
+          sudo docker image prune -af || true
+          df -h
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            bash bc bzip2 curl diffutils dosfstools e2fsprogs exfatprogs fakeroot \
+            file g++-12 gawk gcc-12 git golang-1.18-go gzip jq libjson-perl \
+            libncurses5-dev libparse-yapp-perl libxml-parser-perl locales lzop \
+            make mtools openssh-client parted patch patchutils perl pigz python3 \
+            rdfind rsync sed tar unzip upx-ucl xfonts-utils xsltproc xz-utils zip \
+            zstd default-jre-headless
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+          sudo locale-gen en_US.UTF-8
+
+      - name: Build Phicomm N1 image
+        env:
+          LANG: en_US.UTF-8
+          LC_ALL: en_US.UTF-8
+          PROJECT: Amlogic
+          DEVICE: AMLGX
+          UBOOT_SYSTEM: phicomm-n1
+        run: |
+          ./scripts/uboot_helper Amlogic AMLGX phicomm-n1 dtb
+          make image 2>&1 | tee build-phicomm-n1.log
+
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phicomm-n1-image
+          path: |
+            target/*
+            build-phicomm-n1.log
+          if-no-files-found: warn
