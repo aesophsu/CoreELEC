@@ -25,13 +25,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             bash bc bzip2 curl diffutils dosfstools e2fsprogs exfatprogs fakeroot \
-            file g++-12 gawk gcc-12 git golang-1.18-go gzip jq libjson-perl \
+            file g++-12 gawk gcc-12 git golang-1.18-go gperf gzip jq libjson-perl \
             libncurses5-dev libparse-yapp-perl libxml-parser-perl locales lzop \
             make mtools openssh-client parted patch patchutils perl pigz python3 \
             rdfind rsync sed tar unzip upx-ucl xfonts-utils xsltproc xz-utils zip \
             zstd default-jre-headless
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+          sudo ln -sf /usr/lib/go-1.18 /usr/lib/go
+          sudo ln -sf /usr/lib/go-1.18/bin/go /usr/bin/go
+          sudo ln -sf /usr/lib/go-1.18/bin/gofmt /usr/bin/gofmt
           sudo locale-gen en_US.UTF-8
 
       - name: Build Phicomm N1 image
@@ -42,6 +45,7 @@ jobs:
           DEVICE: AMLGX
           UBOOT_SYSTEM: phicomm-n1
         run: |
+          set -o pipefail
           ./scripts/uboot_helper Amlogic AMLGX phicomm-n1 dtb
           make image 2>&1 | tee build-phicomm-n1.log
 
