@@ -1,0 +1,56 @@
+From 4c0e6e5b8a9f3f6a1d6d4a8f9b3e7d2c1a5b7c9d Mon Sep 17 00:00:00 2001
+From: Milan Sue <aesophsu@gmail.com>
+Date: Mon, 23 Mar 2026 21:20:00 +0800
+Subject: [PATCH 100/100] WIP: arm64: dts: amlogic: add phicomm n1 support
+
+Add a minimal Phicomm N1 device tree derived from the existing S905D
+P230 family. Keep the first version intentionally small and carry only
+the board deltas that are already known to differ from P230:
+
+- board compatible/model
+- disable CVBS
+- force the OTG controller into host mode
+
+Signed-off-by: Milan Sue <aesophsu@gmail.com>
+---
+ arch/arm64/boot/dts/amlogic/Makefile                |  1 +
+ .../boot/dts/amlogic/meson-gxl-s905d-phicomm-n1.dts | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/amlogic/meson-gxl-s905d-phicomm-n1.dts
+
+diff --git a/arch/arm64/boot/dts/amlogic/Makefile b/arch/arm64/boot/dts/amlogic/Makefile
+index 13f73ca700ef..49f3ac5d8123 100644
+--- a/arch/arm64/boot/dts/amlogic/Makefile
++++ b/arch/arm64/boot/dts/amlogic/Makefile
+@@ -36,4 +36,5 @@ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905d-p230.dtb
+ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905d-p231.dtb
++dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905d-phicomm-n1.dtb
+ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905d-sml5442tw.dtb
+ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905d-vero4k-plus.dtb
+ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s805x-p241.dtb
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-phicomm-n1.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-phicomm-n1.dts
+new file mode 100644
+index 000000000000..4d44fa9bc173
+--- /dev/null
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-phicomm-n1.dts
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++/dts-v1/;
++
++#include "meson-gxl-s905d-p230.dts"
++
++/ {
++	compatible = "phicomm,n1", "amlogic,s905d", "amlogic,meson-gxl";
++	model = "Phicomm N1";
++
++	cvbs-connector {
++		status = "disabled";
++	};
++};
++
++&usb {
++	dr_mode = "host";
++};
+--
+2.43.0
