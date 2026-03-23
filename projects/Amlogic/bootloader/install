@@ -25,7 +25,7 @@ rm -rf "${INSTALL}"/usr/share/bootloader/u-boot*
 
 # Install u-boot
 mkdir -p "${INSTALL}/usr/share/bootloader"
-if [ "${UBOOT_SYSTEM}" != "box" ]; then
+if [ "${UBOOT_SYSTEM}" != "box" ] && [ "${UBOOT_SYSTEM}" != "phicomm-n1" ]; then
   if [ -f "${DESTDIR}/u-boot.bin.sd.bin" ]; then
     cp -av "${DESTDIR}/u-boot.bin.sd.bin" "${INSTALL}/usr/share/bootloader"
     # If target/u-boot exists, cache the signed bin
