@@ -247,7 +247,7 @@ elif [ "${BOOTLOADER}" = "u-boot" -a \( -n "${UBOOT_SYSTEM}" -o -n "${SUBDEVICE}
   echo "image: creating bootloader configuration..."
 
   [ -n "${UBOOT_SYSTEM}" ] && DTB="$(${SCRIPTS}/uboot_helper ${PROJECT} ${DEVICE} ${UBOOT_SYSTEM} dtb)" || :
-  if [ -n "${DTB}" ]; then
+  if [ -n "${DTB}" ] && [ "${UBOOT_SYSTEM}" != "phicomm-n1" ]; then
 
     if [ -f "${RELEASE_DIR}/3rdparty/bootloader/${DTB}" ]; then
       mcopy "${RELEASE_DIR}/3rdparty/bootloader/${DTB}" :: >"${SAVE_ERROR}" 2>&1 || show_error
