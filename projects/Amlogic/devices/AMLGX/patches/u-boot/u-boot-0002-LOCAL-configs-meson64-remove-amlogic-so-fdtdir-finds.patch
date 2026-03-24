@@ -5,21 +5,25 @@ Subject: [PATCH 2/5] LOCAL: configs: meson64: remove /amlogic so fdtdir finds
  LE boot files
 
 ---
- include/configs/meson64.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/configs/meson64.h | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/include/configs/meson64.h b/include/configs/meson64.h
-index 0976774e5c..8490091824 100644
+index 0db6b9f1ef..08f7a9bd02 100644
 --- a/include/configs/meson64.h
 +++ b/include/configs/meson64.h
-@@ -133,7 +133,7 @@
- 	"pxefile_addr_r=" PXEFILE_ADDR_R "\0" \
- 	"fdtoverlay_addr_r=" FDTOVERLAY_ADDR_R "\0" \
- 	"ramdisk_addr_r=" RAMDISK_ADDR_R "\0" \
--	"fdtfile=amlogic/" CONFIG_DEFAULT_DEVICE_TREE ".dtb\0" \
-+	"fdtfile=/" CONFIG_DEFAULT_DEVICE_TREE ".dtb\0" \
- 	"dfu_alt_info=fitimage ram " KERNEL_ADDR_R " 0x4000000 \0" \
- 	BOOTENV
- #endif
+@@ -137,11 +137,6 @@
+
+ #include <config_distro_bootcmd.h>
+
+-#ifdef CONFIG_OF_UPSTREAM
+-#define FDTFILE_NAME		CONFIG_DEFAULT_DEVICE_TREE ".dtb"
+-#else
+-#define FDTFILE_NAME		"amlogic/" CONFIG_DEFAULT_DEVICE_TREE ".dtb"
+-#endif
++#define FDTFILE_NAME		CONFIG_DEFAULT_DEVICE_TREE ".dtb"
+
+ #ifndef CFG_EXTRA_ENV_SETTINGS
+ #define CFG_EXTRA_ENV_SETTINGS \
 --
 2.34.1
