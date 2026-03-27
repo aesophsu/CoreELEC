@@ -64,7 +64,9 @@ get_graphicdrivers
 PKG_FFMPEG_HWACCEL="--enable-hwaccels"
 
 if [ "${V4L2_SUPPORT}" = "yes" ]; then
-  PKG_PATCH_DIRS+=" v4l2-request v4l2-drmprime"
+  if [ "${PROJECT}" != "Amlogic" ]; then
+    PKG_PATCH_DIRS+=" v4l2-request v4l2-drmprime"
+  fi
   PKG_DEPENDS_TARGET+=" libdrm"
   PKG_NEED_UNPACK+=" $(get_pkg_directory libdrm)"
   PKG_FFMPEG_V4L2="--enable-v4l2_m2m --enable-libdrm"
