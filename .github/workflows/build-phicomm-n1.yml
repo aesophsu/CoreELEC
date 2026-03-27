@@ -3,6 +3,7 @@ name: Build Phicomm N1 Image
 on:
   push:
     branches:
+      - coreelec-22
       - phicomm-n1-coreelec22-port
   workflow_dispatch:
 
