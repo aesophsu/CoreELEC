@@ -48,6 +48,14 @@ jobs:
       - name: Check Phicomm N1 prerequisites
         run: ./tools/check-phicomm-n1-prereqs.sh
 
+      - name: Prefetch BusyBox source
+        run: |
+          BUSYBOX_VERSION="$(awk -F'\"' '/^PKG_VERSION=/{print $2}' packages/sysutils/busybox/package.mk)"
+          mkdir -p "sources/busybox"
+          curl --retry 5 --retry-delay 5 --retry-all-errors -fL \
+            "https://busybox.net/downloads/busybox-${BUSYBOX_VERSION}.tar.bz2" \
+            -o "sources/busybox/busybox-${BUSYBOX_VERSION}.tar.bz2"
+
       - name: Build Phicomm N1 image
         env:
           LANG: en_US.UTF-8
