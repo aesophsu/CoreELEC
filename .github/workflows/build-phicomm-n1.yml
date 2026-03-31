@@ -68,12 +68,46 @@ jobs:
           ./scripts/uboot_helper Amlogic AMLGX phicomm-n1 dtb
           make image 2>&1 | tee build-phicomm-n1.log
 
+      - name: Inspect build outputs
+        if: always()
+        run: |
+          echo "target contents:"
+          ls -lah target || true
+          echo
+          echo "compressed images:"
+          find target -maxdepth 1 -type f \( -name "*.img.gz" -o -name "*.img.gz.sha256" \) -print | sort || true
+
+      - name: Require flashable image artifact
+        run: |
+          shopt -s nullglob
+          images=(target/*.img.gz)
+          checksums=(target/*.img.gz.sha256)
+
+          if [ ${#images[@]} -eq 0 ]; then
+            echo "No flashable .img.gz image was produced in target/"
+            ls -lah target || true
+            exit 1
+          fi
+
+          if [ ${#checksums[@]} -eq 0 ]; then
+            echo "No .img.gz.sha256 checksum was produced in target/"
+            ls -lah target || true
+            exit 1
+          fi
+
+          echo "Flashable image artifacts found:"
+          printf '  %s\n' "${images[@]}"
+          printf '  %s\n' "${checksums[@]}"
+
       - name: Upload build artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: phicomm-n1-image
           path: |
-            target/*
+            target/*.img.gz
+            target/*.img.gz.sha256
+            target/*.tar
+            target/*.tar.sha256
             build-phicomm-n1.log
           if-no-files-found: warn

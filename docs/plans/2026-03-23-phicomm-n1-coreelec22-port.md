@@ -97,7 +97,7 @@ git commit -m "feat(amlogic): add phicomm n1 image target"
 **Files:**
 - Create: `projects/Amlogic/devices/AMLGX/patches/linux/amlogic-0100-WIP-arm64-dts-amlogic-add-phicomm-n1-support.patch`
 - Reference: `projects/Amlogic/devices/AMLGX/patches/linux/amlogic-0064-WIP-arm64-dts-amlogic-p230-fix-IRQ-for-external-PHY.patch`
-- Reference: `../coreelec/projects/Amlogic-ce/devices/Amlogic-ng/packages/u-boot-Phicomm_N1/sources/meson_gxl_s905d_phicomm_n1.dts`
+- Reference: inspect the existing Phicomm N1 packaging in `projects/Amlogic-ce/devices/Amlogic-ng/packages/u-boot-Phicomm_N1/package.mk` for board-specific source and naming conventions
 
 **Step 1: Write the failing test**
 
