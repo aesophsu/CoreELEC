@@ -4,8 +4,24 @@
 SRCDIR="$BUILD/image/system/usr/share/bootloader"
 DSTDIR="$RELEASE_DIR/3rdparty/bootloader"
 
+copy_matches() {
+  local dest="${@: -1}"
+  local sources=()
+  local pattern
+
+  shopt -s nullglob
+  for pattern in "${@:1:$#-1}"; do
+    sources+=(${pattern})
+  done
+  shopt -u nullglob
+
+  if [ ${#sources[@]} -gt 0 ]; then
+    cp -a "${sources[@]}" "$dest"
+  fi
+}
+
 mkdir -p "$DSTDIR"
-  cp -a "$SRCDIR"/*.scr "$SRCDIR"/*script "$DSTDIR"
+  copy_matches "$SRCDIR"/*.scr "$SRCDIR"/*script "$DSTDIR"
 
   if find_file_path "bootloader/${UBOOT_SYSTEM}.ini"; then
     cp -av "${FOUND_PATH}" "$DSTDIR/boot.ini"
@@ -15,11 +31,13 @@ mkdir -p "$DSTDIR/amlogic"
   ln -sf "$DSTDIR/amlogic" "$DSTDIR/dtb"
   case ${DEVICE:-$PROJECT} in
     AMLGX)
-      cp -a "$SRCDIR"/*gxbb*.dtb "$DSTDIR/amlogic"
-      cp -a "$SRCDIR"/*gxl*.dtb "$DSTDIR/amlogic"
-      cp -a "$SRCDIR"/*gxm*.dtb "$DSTDIR/amlogic"
-      cp -a "$SRCDIR"/*g12a*.dtb "$DSTDIR/amlogic"
-      cp -a "$SRCDIR"/*g12b*.dtb "$DSTDIR/amlogic"
-      cp -a "$SRCDIR"/*sm1*.dtb "$DSTDIR/amlogic"
+      copy_matches \
+        "$SRCDIR"/*gxbb*.dtb \
+        "$SRCDIR"/*gxl*.dtb \
+        "$SRCDIR"/*gxm*.dtb \
+        "$SRCDIR"/*g12a*.dtb \
+        "$SRCDIR"/*g12b*.dtb \
+        "$SRCDIR"/*sm1*.dtb \
+        "$DSTDIR/amlogic"
       ;;
   esac
